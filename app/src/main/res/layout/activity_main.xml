@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <fragment class="com.example.iliamaltsev.enjoyingamovie.VideoListFragment"
+        android:id="@+id/list_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <TextView
+        <TextView
         android:id="@+id/text_view"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/hello"/>
 
-    <com.google.android.youtube.player.YouTubePlayerView
+        <fragment class="com.example.iliamaltsev.enjoyingamovie.VideoFragment"
         android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-</LinearLayout>
+    </LinearLayout>
+</merge>
