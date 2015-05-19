@@ -1,5 +1,41 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
-    android:name="com.example.iliamaltsev.enjoyingamovie.VideoListActivityFragment"
-    tools:layout="@layout/fragment_video_list" android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragmentragment
+         android:id="@+id/fragment_list"
+        tools:layout="@layout/fragment_video_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/hello"/>
+    <LinearLayout
+        android:id="@+id/video_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+        <fragment
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            class="com.example.iliamaltsev.enjoyingamovie.VideoFragment"
+            android:id="@+id/video_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
+</merge>

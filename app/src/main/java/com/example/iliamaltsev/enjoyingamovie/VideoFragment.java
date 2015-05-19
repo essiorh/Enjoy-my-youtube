@@ -9,13 +9,11 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
-/**
- * Created by Ilia Maltsev on 18.05.2015.
- */
+
 public class VideoFragment extends YouTubePlayerFragment implements YouTubePlayer.OnInitializedListener {
     private YouTubePlayer player;
     private String videoId;
-
+    private View videoBox;
     public static VideoFragment newInstance() {
         return new VideoFragment();
     }
@@ -24,7 +22,8 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        
+        videoBox =getActivity().findViewById(R.id.video_box);
+        videoBox.setVisibility(View.VISIBLE);
         initialize(DeveloperKey.DEVELOPER_KEY, this);
     }
 
