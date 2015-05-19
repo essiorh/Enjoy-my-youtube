@@ -8,22 +8,26 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-public class VideoListActivity extends Activity implements VideoListActivityFragment.onSomeEventListener {
+import com.google.android.youtube.player.YouTubePlayerFragment;
+
+public class VideoListActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_list);
 
+        getFragmentManager().beginTransaction().replace(R.id.video_fragment_container, YouTubePlayerFragment.newInstance()).commit();
+
     }
 
 
-    @Override
+    /*@Override
     public void someEvent(VideoItem s) {
 
         VideoFragment videoFragment = (VideoFragment) getFragmentManager().findFragmentById(R.id.video_fragment_container);
         videoFragment.setVideoId(s.getId());
     }
-
+*/
 
 }

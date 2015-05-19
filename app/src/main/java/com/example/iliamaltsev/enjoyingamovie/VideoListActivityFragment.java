@@ -44,12 +44,12 @@ public class VideoListActivityFragment extends Fragment {
     private YouTube youtube;
     public VideoListActivityFragment() {
     }
-    onSomeEventListener someEventListener;
+    /*onSomeEventListener someEventListener;
     public interface onSomeEventListener {
         void someEvent(VideoItem s);
     }
 
-
+*/
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -77,6 +77,7 @@ public class VideoListActivityFragment extends Fragment {
         addClickListener();
     }
 
+    /*
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -86,7 +87,7 @@ public class VideoListActivityFragment extends Fragment {
             throw new ClassCastException(activity.toString() + " must implement onSomeEventListener");
         }
     }
-
+*/
     final String LOG_TAG = "myLogs";
 
 
@@ -103,7 +104,7 @@ public class VideoListActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> av, View v, int pos,
                                     long id) {
                 VideoItem videoItem = searchResults.get(pos);
-                someEventListener.someEvent(videoItem);
+                //someEventListener.someEvent(videoItem);
                 //Intent intent = new Intent(getActivity().getApplicationContext(), PlayerActivity.class);
                 //intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
                 //startActivity(intent);
