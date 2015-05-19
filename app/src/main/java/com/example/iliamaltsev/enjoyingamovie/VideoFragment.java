@@ -22,7 +22,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        videoBox =getActivity().findViewById(R.id.video_box);
+        videoBox =getActivity().findViewById(R.id.video_fragment_container);
         videoBox.setVisibility(View.VISIBLE);
         initialize(DeveloperKey.DEVELOPER_KEY, this);
     }

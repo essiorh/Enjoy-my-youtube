@@ -2,7 +2,7 @@ package com.example.iliamaltsev.enjoyingamovie;
 
 import android.app.Activity;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -44,13 +44,15 @@ public class VideoListActivityFragment extends Fragment {
     private YouTube youtube;
     public VideoListActivityFragment() {
     }
-    /*onSomeEventListener someEventListener;
+    onSomeEventListener someEventListener;
     public interface onSomeEventListener {
         void someEvent(VideoItem s);
     }
 
-*/
 
+    public static VideoListActivityFragment newInstance() {
+        return new VideoListActivityFragment();
+    }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -77,7 +79,7 @@ public class VideoListActivityFragment extends Fragment {
         addClickListener();
     }
 
-    /*
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -87,7 +89,7 @@ public class VideoListActivityFragment extends Fragment {
             throw new ClassCastException(activity.toString() + " must implement onSomeEventListener");
         }
     }
-*/
+
     final String LOG_TAG = "myLogs";
 
 
@@ -104,7 +106,7 @@ public class VideoListActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> av, View v, int pos,
                                     long id) {
                 VideoItem videoItem = searchResults.get(pos);
-                //someEventListener.someEvent(videoItem);
+                someEventListener.someEvent(videoItem);
                 //Intent intent = new Intent(getActivity().getApplicationContext(), PlayerActivity.class);
                 //intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
                 //startActivity(intent);
