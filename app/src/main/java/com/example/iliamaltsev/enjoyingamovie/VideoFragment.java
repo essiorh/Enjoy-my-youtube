@@ -22,8 +22,8 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        videoBox =getActivity().findViewById(R.id.video_fragment_container);
-        videoBox.setVisibility(View.VISIBLE);
+        //videoBox =getActivity().findViewById(R.id.video_fragment_container);
+
         initialize(DeveloperKey.DEVELOPER_KEY, this);
     }
 
@@ -39,6 +39,7 @@ public class VideoFragment extends YouTubePlayerFragment implements YouTubePlaye
         if (videoId != null && !videoId.equals(this.videoId)) {
             this.videoId = videoId;
             if (player != null) {
+                videoBox.setVisibility(View.VISIBLE);
                 player.cueVideo(videoId);
             }
         }

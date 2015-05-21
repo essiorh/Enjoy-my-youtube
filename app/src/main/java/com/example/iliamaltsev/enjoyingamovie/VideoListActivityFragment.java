@@ -2,9 +2,10 @@ package com.example.iliamaltsev.enjoyingamovie;
 
 import android.app.Activity;
 import android.os.Handler;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.pedrovgs.DraggableListener;
+import com.github.pedrovgs.DraggablePanel;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
@@ -42,12 +49,13 @@ public class VideoListActivityFragment extends Fragment {
     private ListView mListView;
     private YouTube.Videos.List queryPopular;
     private YouTube youtube;
+    DraggablePanel draggablePanel;
+    private YouTubePlayer youTubePlayer;
+    private YouTubePlayerSupportFragment youTubePlayerFragment;
+    private info infoFragment;
     public VideoListActivityFragment() {
     }
-    onSomeEventListener someEventListener;
-    public interface onSomeEventListener {
-        void someEvent(VideoItem s);
-    }
+
 
 
     public static VideoListActivityFragment newInstance() {
@@ -59,6 +67,7 @@ public class VideoListActivityFragment extends Fragment {
         mAdapter =  new ListAdapter(getActivity());
         mListView = (ListView) getView().findViewById(R.id.videos_found);
         mListView.setAdapter(mAdapter);
+        draggablePanel=(DraggablePanel)getView().findViewById(R.id.draggable_panel);
 
         searchInput = (EditText)getView().findViewById(R.id.search_input);
         handler = new Handler();
@@ -77,18 +86,11 @@ public class VideoListActivityFragment extends Fragment {
         });
         searchOnYoutube(null);
         addClickListener();
+        initializeYoutubeFragment();
+        hookDraggablePanelListeners();
     }
 
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            someEventListener = (onSomeEventListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement onSomeEventListener");
-        }
-    }
 
     final String LOG_TAG = "myLogs";
 
@@ -105,8 +107,12 @@ public class VideoListActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos,
                                     long id) {
+                if (draggablePanel.getVisibility()!=View.VISIBLE)
+                    draggablePanel.setVisibility(View.VISIBLE);
                 VideoItem videoItem = searchResults.get(pos);
-                someEventListener.someEvent(videoItem);
+                setVideoId(videoItem.getId());
+
+
                 //Intent intent = new Intent(getActivity().getApplicationContext(), PlayerActivity.class);
                 //intent.putExtra("VIDEO_ID", searchResults.get(pos).getId());
                 //startActivity(intent);
@@ -143,5 +149,74 @@ public class VideoListActivityFragment extends Fragment {
                 });
             }
         }.start();
+    }
+
+    private void hookDraggablePanelListeners() {
+        draggablePanel.setFragmentManager(getActivity().getSupportFragmentManager());
+        draggablePanel.setTopFragment(youTubePlayerFragment);
+        infoFragment = new info();
+        draggablePanel.setBottomFragment(infoFragment);
+        draggablePanel.setDraggableListener(new DraggableListener() {
+            @Override
+            public void onMaximized() {
+                playVideo();
+            }
+
+            @Override
+            public void onMinimized() {
+                //Empty
+            }
+
+            @Override
+            public void onClosedToLeft() {
+                pauseVideo();
+            }
+
+            @Override
+            public void onClosedToRight() {
+                pauseVideo();
+            }
+        });
+        draggablePanel.initializeView();
+        draggablePanel.setVisibility(View.GONE);
+    }
+    private void pauseVideo() {
+        if (youTubePlayer.isPlaying()) {
+            youTubePlayer.pause();
+        }
+    }
+    private void playVideo() {
+        if (!youTubePlayer.isPlaying()) {
+            youTubePlayer.play();
+        }
+    }
+    private void initializeYoutubeFragment() {
+        youTubePlayerFragment = new YouTubePlayerSupportFragment();
+        youTubePlayerFragment.initialize(DeveloperKey.DEVELOPER_KEY, new YouTubePlayer.OnInitializedListener() {
+
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                YouTubePlayer player, boolean wasRestored) {
+                if (!wasRestored) {
+                    youTubePlayer = player;
+
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                                YouTubeInitializationResult error) {
+            }
+        });
+    }
+    public void setVideoId(String videoId) {
+        if (videoId != null && !videoId.equals(videoId)) {
+            if (youTubePlayer != null) {
+                youTubePlayer.cueVideo(videoId);
+                youTubePlayer.setShowFullscreenButton(true);
+
+
+            }
+        }
     }
 }
