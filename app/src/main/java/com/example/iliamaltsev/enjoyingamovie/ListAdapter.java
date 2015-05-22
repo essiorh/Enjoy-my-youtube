@@ -19,11 +19,13 @@ public class ListAdapter extends ArrayAdapter<VideoItem> {
 
     private ArrayList<VideoItem> mNewslist;
     private final Context mContext;
-
+    private StringBuffer stringBuffer;
+    private String nextPageToken;
     public ListAdapter(Context context) {
         super(context, R.layout.list_element);
         mNewslist = new ArrayList<>();
         mContext = context;
+        stringBuffer=new StringBuffer();
     }
 
     public void addNewslist(ArrayList<VideoItem> parsedNewsList) {
@@ -31,6 +33,8 @@ public class ListAdapter extends ArrayAdapter<VideoItem> {
         mNewslist.addAll(parsedNewsList);
         notifyDataSetChanged();
     }
+    public String getNextPageToken() { return nextPageToken; }
+    public void setNextPageToken(String nextPageToken) { this.nextPageToken = nextPageToken; }
 
     public ArrayList<VideoItem> getNewsList() {
         return mNewslist;
@@ -51,7 +55,13 @@ public class ListAdapter extends ArrayAdapter<VideoItem> {
 
         Picasso.with(getContext()).load(searchResult.getThumbnailURL()).into(thumbnail);
         title.setText(searchResult.getTitle());
-        description.setText(searchResult.getDescription());
+        stringBuffer.setLength(0);
+        stringBuffer.append(searchResult.getDescription());
+        if(stringBuffer.length()>100){
+            stringBuffer.setLength(100);
+            stringBuffer.append("...");
+        }
+        description.setText(stringBuffer.toString());
         return convertView;
     }
 

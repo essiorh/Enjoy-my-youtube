@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 
 public class info extends Fragment {
     private static final String VIDEO_TAG = "VideoSaveState";
@@ -43,8 +45,20 @@ public class info extends Fragment {
     public void setVideoItem(VideoItem videoItem) {
         this.mVideoItem = videoItem;
         mVideoTitleBigTextView.setText(mVideoItem.getTitle());
-        mTimeTextView.setText(mVideoItem.getId());
-        mViewsCountTextView.setText("Число просмотров"+mVideoItem.getDescription());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(mVideoItem.getDate());
+
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        StringBuffer sDate=new StringBuffer();
+        sDate.append(Integer.toString(mDay));
+        sDate.append(".");
+        sDate.append(Integer.toString(mMonth));
+        sDate.append(".");
+        sDate.append(Integer.toString(mYear));
+        mTimeTextView.setText(sDate);
+        mViewsCountTextView.setText(mVideoItem.getDescription());
     }
 
     @Override

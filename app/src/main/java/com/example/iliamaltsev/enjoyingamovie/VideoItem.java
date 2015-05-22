@@ -8,6 +8,7 @@ public class VideoItem {
     private String description;
     private String thumbnailURL;
     private String id;
+    private Long date;
 
     public String getId() {
         return id;
@@ -39,5 +40,15 @@ public class VideoItem {
 
     public void setThumbnailURL(String thumbnail) {
         this.thumbnailURL = thumbnail;
+    }
+
+    public Long getDate() {
+        return date;
+    }
+
+
+
+    public void setDate(Long date) {
+        this.date = date;
     }
 }

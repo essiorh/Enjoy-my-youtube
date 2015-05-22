@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubeConnector {
-    private YouTube youtube;
+    public YouTube youtube;
     private YouTube.Search.List query;
     private YouTube.Videos.List queryPopular;
 
@@ -38,25 +38,30 @@ public class YouTubeConnector {
 
 
     }
-    public ArrayList<VideoItem> search(String keywords){
+    public ArrayList<VideoItem> search(String keywords, String pageToken){
         try{
             query = youtube.search().list("id,snippet");
             query.setKey(KEY);
             query.setType("video");
-            query.setMaxResults(15l);
-            query.setFields("items(id/videoId,snippet/title,snippet/description,snippet/thumbnails/default/url)");
+            query.setMaxResults(10l);
+            query.setFields("items(id/videoId,snippet/publishedAt,snippet/title,snippet/description,snippet/thumbnails/default/url)");
         }catch(IOException e){
             Log.d("YC", "Could not initialize: " + e);
         }
         query.setQ(keywords);
         try{
+            if (pageToken!=null)
+                query.setPageToken(pageToken);
             SearchListResponse response = query.execute();
+
             List<SearchResult> results = response.getItems();
 
             ArrayList<VideoItem> items = new ArrayList<VideoItem>();
+
             for(SearchResult result:results){
                 VideoItem item = new VideoItem();
                 item.setTitle(result.getSnippet().getTitle());
+                item.setDate(result.getSnippet().getPublishedAt().getValue());
                 item.setDescription(result.getSnippet().getDescription());
                 item.setThumbnailURL(result.getSnippet().getThumbnails().getDefault().getUrl());
                 item.setId(result.getId().getVideoId());
@@ -68,24 +73,29 @@ public class YouTubeConnector {
             return null;
         }
     }
-    public ArrayList<VideoItem> popularvideo(String mostPopular) {
+    public ArrayList<VideoItem> popularvideo(String mostPopular,String pageToken) {
         try {
             queryPopular = youtube.videos().list("id,snippet");
             queryPopular.setKey(KEY);
-            queryPopular.setMaxResults(15l);
-            queryPopular.setFields("items(id,snippet/title,snippet/description,snippet/thumbnails/default/url)");
+            queryPopular.setMaxResults(10l);
+            queryPopular.setFields("items(id,snippet/publishedAt,snippet/title,snippet/description,snippet/thumbnails/default/url)");
         }catch(IOException e){
             Log.d("YC", "Could not initialize: " + e);
         }
         queryPopular.setChart(mostPopular);
         try{
+
+            if (pageToken!=null)
+                queryPopular.setPageToken(pageToken);
             VideoListResponse response = queryPopular.execute();
             List<Video> results = response.getItems();
+            String sToken=response.getNextPageToken();
 
             ArrayList<VideoItem> items = new ArrayList<VideoItem>();
             for(Video result:results){
                 VideoItem item = new VideoItem();
                 item.setTitle(result.getSnippet().getTitle());
+                item.setDate(result.getSnippet().getPublishedAt().getValue());
                 item.setDescription(result.getSnippet().getDescription());
                 item.setThumbnailURL(result.getSnippet().getThumbnails().getDefault().getUrl());
                 item.setId(result.getId());
