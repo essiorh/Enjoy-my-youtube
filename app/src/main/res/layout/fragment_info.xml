@@ -5,7 +5,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="com.example.iliamaltsev.enjoyingamovie.info"
-    android:background="#ffffbab3">
+        android:background="@color/primary_light">
 
 
         <LinearLayout

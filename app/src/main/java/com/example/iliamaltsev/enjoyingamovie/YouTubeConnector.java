@@ -12,7 +12,7 @@ import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
 
-import org.apache.http.HttpRequest;
+
 
 import java.io.IOException;
 import java.util.ArrayList;

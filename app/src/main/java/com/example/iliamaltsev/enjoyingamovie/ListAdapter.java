@@ -1,7 +1,6 @@
 package com.example.iliamaltsev.enjoyingamovie;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import it.sephiroth.android.library.picasso.Picasso;
 
@@ -57,8 +55,8 @@ public class ListAdapter extends ArrayAdapter<VideoItem> {
         title.setText(searchResult.getTitle());
         stringBuffer.setLength(0);
         stringBuffer.append(searchResult.getDescription());
-        if(stringBuffer.length()>100){
-            stringBuffer.setLength(100);
+        if(stringBuffer.length()>50){
+            stringBuffer.setLength(50);
             stringBuffer.append("...");
         }
         description.setText(stringBuffer.toString());

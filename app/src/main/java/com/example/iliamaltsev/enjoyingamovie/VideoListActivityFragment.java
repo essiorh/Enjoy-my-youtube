@@ -1,11 +1,9 @@
 package com.example.iliamaltsev.enjoyingamovie;
 
-import android.app.Activity;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,22 +19,17 @@ import com.github.pedrovgs.DraggableListener;
 import com.github.pedrovgs.DraggablePanel;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchListResponse;
-import com.google.api.services.youtube.model.SearchResult;
-import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import it.sephiroth.android.library.picasso.Picasso;
 
 
 /**
@@ -307,7 +298,7 @@ public class VideoListActivityFragment extends Fragment {
                 draggablePanel.maximize();
                 youTubePlayer.loadVideo(videoId);
 
-                youTubePlayer.setShowFullscreenButton(true);
+                youTubePlayer.setShowFullscreenButton(false);
 
 
             }
