@@ -13,7 +13,7 @@ import java.util.Calendar;
 
 
 public class info extends Fragment {
-    private static final String VIDEO_TAG = "VideoSaveState";
+    public static final String VIDEO_TAG = "VideoSaveState";
     private VideoItem mVideoItem;
 
     private TextView mVideoTitleBigTextView;
@@ -38,7 +38,7 @@ public class info extends Fragment {
 
     }
 
-    public VideoItem getmVideoItem() {
+    public VideoItem getVideoItem() {
         return mVideoItem;
     }
 

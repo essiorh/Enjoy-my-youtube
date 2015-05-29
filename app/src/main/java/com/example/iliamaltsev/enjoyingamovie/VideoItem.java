@@ -1,9 +1,11 @@
 package com.example.iliamaltsev.enjoyingamovie;
 
+import java.io.Serializable;
+
 /**
  * Created by Ilia Maltsev on 18.05.2015.
  */
-public class VideoItem {
+public class VideoItem implements Serializable {
     private String title;
     private String description;
     private String thumbnailURL;

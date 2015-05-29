@@ -1,7 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.iliamaltsev.enjoyingamovie.VideoListActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    tools:context=".VideoListActivity">
+    <!-- голосовой поиск -->
+    <item
+        android:id="@+id/voice_search"
+        android:title="@string/voice_search"
+        android:icon="@mipmap/mic_ico"
+        app:showAsAction="ifRoom"
+        />
+    <!-- поиск по строке -->
+    <item
+        android:id="@+id/text_search"
+        android:title="@string/search"
+        android:icon="@mipmap/search_ico"
+        app:showAsAction="ifRoom"
+        />
 </menu>

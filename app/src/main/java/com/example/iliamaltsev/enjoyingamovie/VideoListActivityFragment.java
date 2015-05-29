@@ -36,7 +36,13 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class VideoListActivityFragment extends Fragment {
-
+    private static final String PLAYER_SAVE_STATE ="playerSaveState" ;
+    public static final String VIDEO_ID_TAG="VideoListActivityFragment.videoID";
+    public static final String VIDEO_QUERY_TAG="mQueryString";
+    public static final String VIDEO_LIST_SAVE_STATE="videoListSaveState";
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
+    private static final String NEXT_TOKEN = "nextToken";
+    private static final String PREV_TOKEN = "preevToken";
     private EditText searchInput;
     private Handler handler;
     private ListAdapter mAdapter;
@@ -65,7 +71,7 @@ public class VideoListActivityFragment extends Fragment {
     {
         return prevPageToken;
     }
-
+    private View view = null;
     private YouTube youtube;
     private YouTube.Search.List query;
     public VideoListActivityFragment() {
@@ -115,8 +121,8 @@ public class VideoListActivityFragment extends Fragment {
                 return true;
             }
         });
-        searchOnYoutube(null);
-        changePageToken();
+
+        //changePageToken();
         addClickListener();
         initializeYoutubeFragment();
         hookDraggablePanelListeners();
@@ -137,12 +143,61 @@ public class VideoListActivityFragment extends Fragment {
                 }
             }
         });
+        if (savedInstanceState!=null){
+            searchResults =(ArrayList) savedInstanceState.getSerializable(VIDEO_LIST_SAVE_STATE);
+            if (searchResults != null && searchResults.size()>0) {
+                mAdapter.addNewslist(searchResults);
+                mListView.setAdapter(mAdapter);
+                /*if (draggablePanel.equals(null))
+                    draggablePanel=new DraggablePanel()
+                    */
+                /*final VideoItem serVideoItem = (VideoItem) savedInstanceState.getSerializable(infoFragment.VIDEO_TAG);
+                if (serVideoItem != null) {
+                    new Thread() {
+                        public void run() {
+                            while (true) {
+                                if (youTubePlayer != null) {
+                                    infoFragment.setVideoItem(serVideoItem);
+                                    setVideoId(serVideoItem.getId());
+                                    draggablePanel.setVisibility(View.VISIBLE);
+                                    draggablePanel.maximize();
+                                    break;
+                                }
+                                try {
+                                    Thread.sleep(100l);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    };
+                }
+
+                setNextPageToken(savedInstanceState.getString(NEXT_TOKEN));
+                setPrevPageToken(savedInstanceState.getString(PREV_TOKEN));*/
+            }else{
+                searchOnYoutube(null);
+            }
+        }
+        else{
+            changePageToken();
+            searchOnYoutube(null);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_video_list, container, false);
+        // ���������, ������� �� ������������� ���������
+        if(view == null) {
+            // ���� ������������� ���, ������� ���
+            view = inflater.inflate(R.layout.fragment_video_list, container, false);
+        } else {
+            // ���� ������������� ����, ������� ��� �� ��������,
+            // ����� ��������� ������ ��� ��� ����������
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
+        return view;
     }
 
     private void addClickListener(){
@@ -292,17 +347,28 @@ public class VideoListActivityFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ArrayList<VideoItem> arrayListSerial=mAdapter.getNewsList();
+        outState.putString(NEXT_TOKEN,getNextPageToken());
+        outState.putString(PREV_TOKEN,getPrevPageToken());
+        outState.putSerializable(infoFragment.VIDEO_TAG,infoFragment.getVideoItem());
+        outState.putSerializable(VIDEO_LIST_SAVE_STATE,arrayListSerial);
+    }
     public void setVideoId(String videoId) {
         if (videoId != null) {
             if (youTubePlayer != null) {
                 draggablePanel.maximize();
                 youTubePlayer.loadVideo(videoId);
 
-                youTubePlayer.setShowFullscreenButton(false);
+                youTubePlayer.setShowFullscreenButton(true);
 
 
             }
         }
+
     }
     public abstract class InfiniteScrollListener implements AbsListView.OnScrollListener {
         private int bufferItemCount = 10;
