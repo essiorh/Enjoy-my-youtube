@@ -1,4 +1,4 @@
-package com.example.iliamaltsev.enjoyingamovie;
+package com.example.iliamaltsev.enjoyingamovie.adapters;
 
 import java.io.Serializable;
 

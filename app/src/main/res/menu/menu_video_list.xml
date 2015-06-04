@@ -3,17 +3,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".VideoListActivity">
     <!-- голосовой поиск -->
-    <item
-        android:id="@+id/voice_search"
-        android:title="@string/voice_search"
-        android:icon="@mipmap/mic_ico"
-        app:showAsAction="ifRoom"
-        />
-    <!-- поиск по строке -->
-    <item
-        android:id="@+id/text_search"
-        android:title="@string/search"
-        android:icon="@mipmap/search_ico"
-        app:showAsAction="ifRoom"
-        />
+
 </menu>

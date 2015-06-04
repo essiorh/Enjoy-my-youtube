@@ -5,8 +5,7 @@
     android:orientation="vertical"
     android:background="@color/primary_light"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--<include android:id="@+id/toolbar"
-    layout="@layout/toolbar"/>-->
+
         <FrameLayout
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"

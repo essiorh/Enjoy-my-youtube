@@ -1,7 +1,5 @@
-package com.example.iliamaltsev.enjoyingamovie;
+package com.example.iliamaltsev.enjoyingamovie.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.iliamaltsev.enjoyingamovie.R;
+import com.example.iliamaltsev.enjoyingamovie.adapters.VideoItem;
+
 import java.util.Calendar;
 
 
-public class info extends Fragment {
+public class VideoInfoFragment extends Fragment {
     public static final String VIDEO_TAG = "VideoSaveState";
     private VideoItem mVideoItem;
 
@@ -20,7 +21,7 @@ public class info extends Fragment {
     private TextView mTimeTextView         ;
     private TextView mViewsCountTextView   ;
 
-    public info() {
+    public VideoInfoFragment() {
     }
 
     @Override

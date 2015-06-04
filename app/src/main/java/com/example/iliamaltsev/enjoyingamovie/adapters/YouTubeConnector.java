@@ -1,8 +1,9 @@
-package com.example.iliamaltsev.enjoyingamovie;
+package com.example.iliamaltsev.enjoyingamovie.adapters;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.example.iliamaltsev.enjoyingamovie.R;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -23,7 +24,6 @@ public class YouTubeConnector {
     private YouTube.Search.List query;
     private YouTube.Videos.List queryPopular;
 
-    // Your developer key goes here
     public static final String KEY
             = "AIzaSyC6pyliWX1fGdlTjk8pBxKCkbX1iNcBPjk";
 
@@ -35,7 +35,6 @@ public class YouTubeConnector {
 
             }
         }).setApplicationName(context.getString(R.string.app_name)).build();
-
 
     }
     public ArrayList<VideoItem> search(String keywords, String pageToken){
