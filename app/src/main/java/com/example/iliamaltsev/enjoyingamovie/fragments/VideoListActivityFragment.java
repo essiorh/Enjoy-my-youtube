@@ -1,7 +1,7 @@
 package com.example.iliamaltsev.enjoyingamovie.fragments;
 
-import android.os.Handler;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,11 +15,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.iliamaltsev.enjoyingamovie.R;
-import com.example.iliamaltsev.enjoyingamovie.adapters.VideoItem;
-import com.example.iliamaltsev.enjoyingamovie.keys.DeveloperKey;
 import com.example.iliamaltsev.enjoyingamovie.adapters.InfiniteScrollListener;
 import com.example.iliamaltsev.enjoyingamovie.adapters.ListAdapter;
+import com.example.iliamaltsev.enjoyingamovie.adapters.VideoItem;
 import com.example.iliamaltsev.enjoyingamovie.adapters.YouTubeConnector;
+import com.example.iliamaltsev.enjoyingamovie.keys.DeveloperKey;
 import com.github.pedrovgs.DraggableListener;
 import com.github.pedrovgs.DraggablePanel;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -35,8 +35,6 @@ import com.google.api.services.youtube.model.VideoListResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
-
 /**
  * This is the main fragment for show YouTube video list
  * and show selection video in another fragment
@@ -44,6 +42,7 @@ import java.util.ArrayList;
  * @author ilia
  */
 public class VideoListActivityFragment extends Fragment implements HttpRequestInitializer,TextView.OnEditorActionListener{
+    public static final String MOST_POPULAR = "MostPopular";
     private EditText searchInput;
     private Handler handler;
     private ListAdapter mAdapter;
@@ -56,20 +55,8 @@ public class VideoListActivityFragment extends Fragment implements HttpRequestIn
     private VideoInfoFragment infoFragment;
     private static String nextPageToken;
     private static String prevPageToken;
-    private View view = null;
     private YouTube youtube;
     private YouTube.Search.List query;
-    public static synchronized void setNextPageToken(String value) {
-        nextPageToken=value;
-    }
-    public static synchronized String getNextPageToken()
-    {
-        return nextPageToken;
-    }
-    public static synchronized void setPrevPageToken(String value) {
-        prevPageToken = value;
-    }
-    public static synchronized String getPrevPageToken() { return prevPageToken; }
 
     /**
      * Default constructor
@@ -78,26 +65,51 @@ public class VideoListActivityFragment extends Fragment implements HttpRequestIn
     }
 
     @Override
-    public void initialize(com.google.api.client.http.HttpRequest request) throws IOException {
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        addStartValuesForOurElements();
+
+        initializeOurElements();
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mAdapter =  new ListAdapter(getActivity());
-        mListView = (ListView) getView().findViewById(R.id.videos_found);
-        mListView.setAdapter(mAdapter);
-        youtube=new YouTube.Builder(new NetHttpTransport(),
-                new JacksonFactory(), this).setApplicationName(getActivity().getString(R.string.app_name)).build();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_video_list, container, false);
+    }
 
-        draggablePanel=(DraggablePanel)getView().findViewById(R.id.draggable_panel);
-        infoFragment = new VideoInfoFragment();
-        nextPageToken=null;
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        return beginToFindNewVideoList(v, actionId, event);
+    }
 
-        prevPageToken=null;
-        searchInput = (EditText)getView().findViewById(R.id.search_input);
+    @Override
+    public void initialize(com.google.api.client.http.HttpRequest request) throws IOException {
+    }
+
+    /**
+     * Use it, when you need to set start values for your elements
+     */
+    private void addStartValuesForOurElements() {
+        mAdapter = new ListAdapter(getActivity());
+        youtube = new YouTube.Builder(new NetHttpTransport(),
+                new JacksonFactory(), this).setApplicationName(
+                getActivity().getString(R.string.app_name)).build();
         handler = new Handler();
+        infoFragment = new VideoInfoFragment();
+        draggablePanel = (DraggablePanel) getView().findViewById(R.id.draggable_panel);
+        mListView = (ListView) getView().findViewById(R.id.videos_found);
+        searchInput = (EditText) getView().findViewById(R.id.search_input);
+        nextPageToken = null;
+        prevPageToken = null;
+    }
+    /**
+     * Use it, when you need to initialize all your elements in VideoActivityFragment
+     */
+    private void initializeOurElements() {
         searchInput.setOnEditorActionListener(this);
+        mListView.setAdapter(mAdapter);
 
         addClickListener();
         initializeYoutubeFragment();
@@ -109,21 +121,11 @@ public class VideoListActivityFragment extends Fragment implements HttpRequestIn
                 loadMoreVideo();
             }
         });
+
         changePageToken();
         searchOnYoutube(null);
     }
 
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_video_list, container, false);
-    }
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        return beginToFindNewVideoList(v, actionId, event);
-    }
     /**
      * Please call this method when you need to load more video to your video list
      */
@@ -136,6 +138,7 @@ public class VideoListActivityFragment extends Fragment implements HttpRequestIn
                     textSearchInput);
         }
     }
+
     /**
      * Call this method for add click listener
      * to selected video item in your video list
@@ -164,9 +167,9 @@ public class VideoListActivityFragment extends Fragment implements HttpRequestIn
     }
 
     /**
-     * Please call this method when you need to search
+     * Please call this method when you need to searchOfWhatUserUserWants
      * new video list
-     * @param keywords Needs to search string.
+     * @param keywords Needs to searchOfWhatUserUserWants string.
      *                 If keyvords is null then will show
      *                 most popular list
      */
@@ -175,11 +178,11 @@ public class VideoListActivityFragment extends Fragment implements HttpRequestIn
             public void run(){
                 YouTubeConnector yc = new YouTubeConnector(getActivity());
                 searchResults = (keywords!=null) ?
-                        yc.search(keywords,nextPageToken):
-                        yc.popularvideo("MostPopular",nextPageToken);
+                        yc.searchOfWhatUserUserWants(keywords, nextPageToken):
+                        yc.searchMostPopularVideos(MOST_POPULAR, nextPageToken);
                 handler.post(new Runnable(){
                     public void run() {
-                            mAdapter.addNewslist(searchResults);
+                            mAdapter.addNewsTolist(searchResults);
                     }
                 });
             }
@@ -324,6 +327,7 @@ public class VideoListActivityFragment extends Fragment implements HttpRequestIn
 
                 }
             }
+
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider,
                                                 YouTubeInitializationResult error) {
@@ -370,4 +374,35 @@ public class VideoListActivityFragment extends Fragment implements HttpRequestIn
         }
         return true;
     }
+
+    /**
+     * Setter for {@link #nextPageToken} in another thread
+     * @param value It needs to set to {@link #nextPageToken}
+     */
+    public static synchronized void setNextPageToken(String value) {
+        nextPageToken=value;
+    }
+
+    /**
+     * Getter for {@link #nextPageToken} in another thread
+     * @return Return synchronized {@link #nextPageToken}
+     */
+    public static synchronized String getNextPageToken()
+    {
+        return nextPageToken;
+    }
+
+    /**
+     * Setter for {@link #prevPageToken} in another thread
+     * @param value It needs to set to {@link #prevPageToken}
+     */
+    public static synchronized void setPrevPageToken(String value) {
+        prevPageToken = value;
+    }
+
+    /**
+     * Getter for {@link #prevPageToken} in another thread
+     * @return Return synchronized {@link #prevPageToken}
+     */
+    public static synchronized String getPrevPageToken() { return prevPageToken; }
 }

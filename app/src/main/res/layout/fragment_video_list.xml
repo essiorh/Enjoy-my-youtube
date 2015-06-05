@@ -20,20 +20,20 @@
             android:layout_height="wrap_content"
             android:hint="@string/search"
             android:id="@+id/search_input"
-            android:singleLine="true"
-            />
+            android:singleLine="true" />
 
         <ListView
             android:id="@+id/videos_found"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:dividerHeight="5dp"
-            />
+            android:dividerHeight="5dp" />
+
     </LinearLayout>
+
     <com.github.pedrovgs.DraggablePanel
         android:id="@+id/draggable_panel"
         draggable_panel:top_fragment_height="@dimen/top_fragment_height"
-
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
+
 </RelativeLayout>

@@ -3,7 +3,9 @@ package com.example.iliamaltsev.enjoyingamovie.adapters;
 import java.io.Serializable;
 
 /**
- * Created by Ilia Maltsev on 18.05.2015.
+ * This class needs to store your VideoItems in your video list
+ * @see com.example.iliamaltsev.enjoyingamovie.adapters.VideoItem
+ * @author ilia
  */
 public class VideoItem implements Serializable {
     private String title;

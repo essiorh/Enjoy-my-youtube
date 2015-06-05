@@ -3,7 +3,8 @@ package com.example.iliamaltsev.enjoyingamovie.adapters;
 import android.widget.AbsListView;
 
 /**
- * Created by root on 29.05.15.
+ * This abstract class needs to implements infinite scroll for your list view.
+ * @author ilia
  */
 public abstract class InfiniteScrollListener implements AbsListView.OnScrollListener {
     private int bufferItemCount = 10;
